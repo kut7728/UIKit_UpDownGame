@@ -28,10 +28,46 @@ class ViewController: UIViewController {
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         print(sender.value)
+        sliderValueLabel.text = String(Int(sender.value))
     }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: nil,
+                                      message: message,
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK",
+                                     style: .default) { _ in
+            self.reset()
+        }
+        
+        alert.addAction(okAction)
+        present(alert,
+                animated: true,
+                completion: nil)
+    }
+    
     
     @IBAction func touchUpHitButton(_ sender: UIButton) {
         print(slider.value)
+        let hitValue = Int(slider.value)
+        slider.value = Float(hitValue)
+        
+        tryCount += 1
+        tryCountLabel.text = "\(tryCount) / 5"
+        
+        if randomValue == hitValue {
+            showAlert(message: "YOU WIN!!")
+            reset()
+        } else if tryCount >= 5 {
+            showAlert(message: "YOU LOSE...")
+            reset()
+        } else if randomValue > hitValue {
+            minimumValueLabel.text = "\(hitValue)"
+            slider.minimumValue = Float(hitValue)
+        } else {
+            maximumValueLabel.text = "\(hitValue)"
+            slider.maximumValue = Float(hitValue)
+        }
     }
     
     @IBAction func touchUpResetButton(_ sender: UIButton) {
